@@ -1,6 +1,6 @@
 // ===========================
-// BCAQI - Ultra-Premium JavaScript
-// Performance Optimized
+// BCAQI - Refined JavaScript
+// All Issues Fixed + Enhanced
 // ===========================
 
 'use strict';
@@ -12,39 +12,44 @@ window.addEventListener('load', () => {
     const loadingScreen = document.getElementById('loadingScreen');
     setTimeout(() => {
         loadingScreen.classList.add('hidden');
-    }, 800);
+    }, 600);
 });
 
 // ===========================
-// Mobile Navigation
+// Mobile Navigation - Enhanced
 // ===========================
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
+const navLinks = document.querySelectorAll('.nav-link, .nav-cta');
 
+// Toggle mobile menu
 navToggle?.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-
+    const isActive = navMenu.classList.toggle('active');
     const spans = navToggle.querySelectorAll('span');
-    if (navMenu.classList.contains('active')) {
+
+    if (isActive) {
         spans[0].style.transform = 'rotate(45deg) translateY(12px)';
         spans[1].style.opacity = '0';
         spans[2].style.transform = 'rotate(-45deg) translateY(-12px)';
         document.body.style.overflow = 'hidden';
     } else {
-        spans.forEach(span => span.style.transform = '');
-        spans[1].style.opacity = '1';
-        document.body.style.overflow = '';
+        resetNavToggle(spans);
     }
 });
 
+// Reset nav toggle animation
+function resetNavToggle(spans) {
+    spans.forEach(span => span.style.transform = '');
+    spans[1].style.opacity = '1';
+    document.body.style.overflow = '';
+}
+
 // Close menu when clicking on links
-document.querySelectorAll('.nav-link, .nav-cta').forEach(link => {
+navLinks.forEach(link => {
     link.addEventListener('click', () => {
         navMenu.classList.remove('active');
         const spans = navToggle.querySelectorAll('span');
-        spans.forEach(span => span.style.transform = '');
-        spans[1].style.opacity = '1';
-        document.body.style.overflow = '';
+        resetNavToggle(spans);
     });
 });
 
@@ -55,9 +60,16 @@ document.addEventListener('click', (e) => {
         !navToggle.contains(e.target)) {
         navMenu.classList.remove('active');
         const spans = navToggle.querySelectorAll('span');
-        spans.forEach(span => span.style.transform = '');
-        spans[1].style.opacity = '1';
-        document.body.style.overflow = '';
+        resetNavToggle(spans);
+    }
+});
+
+// Close menu on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        const spans = navToggle.querySelectorAll('span');
+        resetNavToggle(spans);
     }
 });
 
@@ -121,7 +133,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ===========================
-// Animated Counter
+// Animated Counter - Improved
 // ===========================
 const animateCounter = (element, target, duration = 2000) => {
     const start = 0;
@@ -141,7 +153,8 @@ const animateCounter = (element, target, duration = 2000) => {
 
 const formatNumber = (num) => {
     if (num >= 1000) {
-        return (num / 1000).toFixed(num % 1000 === 0 ? 0 : 1) + 'K';
+        const thousands = num / 1000;
+        return thousands % 1 === 0 ? thousands + 'K' : thousands.toFixed(1) + 'K';
     }
     return num.toString();
 };
@@ -171,11 +184,15 @@ if (typeof AOS !== 'undefined') {
         once: true,
         offset: 50,
         delay: 0,
+        disable: function() {
+            // Disable on mobile if performance is an issue
+            return window.innerWidth < 768;
+        }
     });
 }
 
 // ===========================
-// Image Lazy Loading with Placeholders
+// Image Lazy Loading with Error Handling
 // ===========================
 const imageObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -199,7 +216,7 @@ document.querySelectorAll('.gallery-item img').forEach((img, index) => {
     img.onerror = function() {
         const colors = ['3b82f6', '8b5cf6', '10b981', 'f59e0b', 'ef4444', '06b6d4'];
         const color = colors[index % colors.length];
-        this.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Cdefs%3E%3ClinearGradient id='grad${index}' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23${color};stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23${color};stop-opacity:0.7' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad${index})' width='800' height='600'/%3E%3Ctext fill='white' font-family='Inter, sans-serif' font-size='24' font-weight='700' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EEvent ${index + 1}%3C/text%3E%3Ctext fill='rgba(255,255,255,0.7)' font-family='Inter, sans-serif' font-size='16' font-weight='500' x='50%25' y='60%25' text-anchor='middle' dy='.3em'%3EBCAQI Community%3C/text%3E%3C/svg%3E`;
+        this.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Cdefs%3E%3ClinearGradient id='grad${index}' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23${color};stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23${color};stop-opacity:0.7' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad${index})' width='800' height='600'/%3E%3Ctext fill='white' font-family='Inter, sans-serif' font-size='28' font-weight='700' x='50%25' y='45%25' text-anchor='middle' dy='.3em'%3EBCAQI Event%3C/text%3E%3Ctext fill='white' font-family='Inter, sans-serif' font-size='20' font-weight='600' x='50%25' y='55%25' text-anchor='middle' dy='.3em'%3ECommunity Gathering%3C/text%3E%3C/svg%3E`;
     };
 });
 
@@ -276,43 +293,43 @@ toastStyle.textContent = `
 document.head.appendChild(toastStyle);
 
 // ===========================
-// Analytics Event Tracking (Optional)
+// Active Nav Link Highlighting
 // ===========================
-function trackEvent(eventName, eventData = {}) {
-    // Google Analytics 4 example
-    if (typeof gtag !== 'undefined') {
-        gtag('event', eventName, eventData);
-    }
+const sections = document.querySelectorAll('section[id]');
 
-    // Console log for development
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.log('📊 Event:', eventName, eventData);
-    }
-}
+window.addEventListener('scroll', () => {
+    let current = '';
 
-// Track CTA clicks
-document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta').forEach(button => {
-    button.addEventListener('click', () => {
-        trackEvent('cta_click', {
-            button_text: button.textContent.trim(),
-            button_location: button.closest('section')?.id || 'navigation',
-            button_href: button.getAttribute('href')
-        });
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= (sectionTop - 100)) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
     });
 });
 
-// Track external links
-document.querySelectorAll('a[target="_blank"]').forEach(link => {
-    link.addEventListener('click', () => {
-        trackEvent('external_link', {
-            link_url: link.href,
-            link_text: link.textContent.trim()
-        });
-    });
-});
+// Add active state styling
+const activeNavStyle = document.createElement('style');
+activeNavStyle.textContent = `
+    .nav-link.active {
+        color: var(--accent) !important;
+    }
+    .nav-link.active::after {
+        width: 100% !important;
+    }
+`;
+document.head.appendChild(activeNavStyle);
 
 // ===========================
-// Scroll Progress Indicator (Optional)
+// Scroll Progress Indicator
 // ===========================
 function updateScrollProgress() {
     const winScroll = document.documentElement.scrollTop;
@@ -342,23 +359,41 @@ function updateScrollProgress() {
 window.addEventListener('scroll', updateScrollProgress);
 
 // ===========================
-// Keyboard Shortcuts
+// Analytics Event Tracking
 // ===========================
-document.addEventListener('keydown', (e) => {
-    // Press 'Escape' to close mobile menu
-    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-        const spans = navToggle.querySelectorAll('span');
-        spans.forEach(span => span.style.transform = '');
-        spans[1].style.opacity = '1';
-        document.body.style.overflow = '';
+function trackEvent(eventName, eventData = {}) {
+    // Google Analytics 4 example
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, eventData);
     }
 
-    // Press '/' to focus on first CTA (join button)
-    if (e.key === '/' && !e.target.matches('input, textarea')) {
-        e.preventDefault();
-        document.querySelector('.nav-cta')?.focus();
+    // Console log for development
+    if (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname.includes('github.io')) {
+        console.log('📊 Event:', eventName, eventData);
     }
+}
+
+// Track CTA clicks
+document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta').forEach(button => {
+    button.addEventListener('click', () => {
+        trackEvent('cta_click', {
+            button_text: button.textContent.trim(),
+            button_location: button.closest('section')?.id || 'navigation',
+            button_href: button.getAttribute('href')
+        });
+    });
+});
+
+// Track external links
+document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    link.addEventListener('click', () => {
+        trackEvent('external_link', {
+            link_url: link.href,
+            link_text: link.textContent.trim()
+        });
+    });
 });
 
 // ===========================
@@ -366,12 +401,16 @@ document.addEventListener('keydown', (e) => {
 // ===========================
 if ('PerformanceObserver' in window) {
     // Monitor Largest Contentful Paint
-    const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-            console.log('⚡ LCP:', entry.renderTime || entry.loadTime);
-        }
-    });
-    observer.observe({ entryTypes: ['largest-contentful-paint'] });
+    try {
+        const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+                console.log('⚡ LCP:', Math.round(entry.renderTime || entry.loadTime), 'ms');
+            }
+        });
+        observer.observe({ entryTypes: ['largest-contentful-paint'] });
+    } catch (e) {
+        console.log('Performance monitoring not available');
+    }
 }
 
 // Log page load time
@@ -380,13 +419,53 @@ window.addEventListener('load', () => {
         const perfData = window.performance.timing;
         const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
         console.log('⚡ Page Load Time:', pageLoadTime + 'ms');
+
+        // Track page load performance
+        trackEvent('page_load', {
+            load_time: pageLoadTime,
+            device: isMobile() ? 'mobile' : 'desktop'
+        });
     }
 });
 
 // ===========================
-// Service Worker Registration (PWA)
+// Device Detection
 // ===========================
-if ('serviceWorker' in navigator) {
+function isMobile() {
+    return /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+}
+
+if (isMobile()) {
+    document.body.classList.add('mobile-device');
+}
+
+// ===========================
+// Prevent Layout Shift
+// ===========================
+// Add min-height to sections on load to prevent CLS
+window.addEventListener('load', () => {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const height = section.offsetHeight;
+        section.style.minHeight = height + 'px';
+    });
+});
+
+// ===========================
+// Enhanced Error Handling
+// ===========================
+window.addEventListener('error', (e) => {
+    console.error('Error caught:', e.message);
+    trackEvent('javascript_error', {
+        error_message: e.message,
+        error_line: e.lineno
+    });
+});
+
+// ===========================
+// Service Worker Registration
+// ===========================
+if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
             .then(registration => {
@@ -399,15 +478,32 @@ if ('serviceWorker' in navigator) {
 }
 
 // ===========================
-// Detect Mobile Device
+// Intersection Observer for Fade-in Effects
 // ===========================
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-if (isMobile) {
-    document.body.classList.add('mobile-device');
+const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+});
+
+// Observe fade elements (if AOS is not loaded)
+if (typeof AOS === 'undefined') {
+    document.querySelectorAll('.feature-card, .community-card, .project-card-large').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        fadeObserver.observe(el);
+    });
 }
 
 // ===========================
-// Console Art & Message
+// Console Art & Branding
 // ===========================
 console.log(
     '%c' + `
@@ -429,7 +525,7 @@ console.log(
 );
 
 console.log(
-    '%c💼 Interested in joining our team?',
+    '%c💼 Interested in joining our community?',
     'color: #10b981; font-size: 16px; font-weight: bold; margin-top: 10px;'
 );
 
@@ -439,9 +535,52 @@ console.log(
 );
 
 console.log(
-    '%c🌐 Website: bcaqi.com',
+    '%c🌐 Website: https://haider1998.github.io/bcaqi/',
     'color: #6b7280; font-size: 14px;'
 );
+
+console.log(
+    '%c🔧 Built with modern web technologies',
+    'color: #9ca3af; font-size: 12px; font-style: italic;'
+);
+
+// ===========================
+// Keyboard Shortcuts
+// ===========================
+document.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + K = Quick search (future feature)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        console.log('Search feature coming soon!');
+    }
+});
+
+// ===========================
+// Prefetch Important Resources
+// ===========================
+function prefetchResource(url) {
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = url;
+    document.head.appendChild(link);
+}
+
+// Prefetch external links on hover
+document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    link.addEventListener('mouseenter', () => {
+        prefetchResource(link.href);
+    }, { once: true });
+});
+
+// ===========================
+// Export Functions for Global Use
+// ===========================
+window.BCAQI = {
+    showToast,
+    trackEvent,
+    formatNumber,
+    isMobile
+};
 
 // ===========================
 // Initialize All Features
@@ -449,47 +588,79 @@ console.log(
 document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ BCAQI Website Initialized');
     console.log('⚡ All systems operational');
+    console.log('📊 Analytics ready');
+    console.log('🎨 Animations loaded');
 
-    // Add active class to current nav link based on scroll position
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // Track page view
+    trackEvent('page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        device: isMobile() ? 'mobile' : 'desktop'
+    });
+});
 
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (pageYOffset >= sectionTop - 100) {
-                current = section.getAttribute('id');
-            }
-        });
+// ===========================
+// Online/Offline Detection
+// ===========================
+window.addEventListener('online', () => {
+    showToast('✓ Connection restored');
+});
 
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
+window.addEventListener('offline', () => {
+    showToast('⚠ No internet connection', 5000);
+});
+
+// ===========================
+// Tab Visibility Change
+// ===========================
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        console.log('User left tab');
+        trackEvent('tab_hidden');
+    } else {
+        console.log('User returned to tab');
+        trackEvent('tab_visible');
+    }
+});
+
+// ===========================
+// Form Submission Handler (if needed in future)
+// ===========================
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+        trackEvent('form_submission', {
+            form_id: form.id || 'unnamed_form'
         });
     });
 });
 
-// Add active state styling
-const activeNavStyle = document.createElement('style');
-activeNavStyle.textContent = `
-    .nav-link.active {
-        color: var(--accent) !important;
+// ===========================
+// Auto-hide scroll indicator after scroll
+// ===========================
+let hasScrolled = false;
+window.addEventListener('scroll', () => {
+    if (!hasScrolled && window.pageYOffset > 100) {
+        hasScrolled = true;
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (scrollIndicator) {
+            scrollIndicator.style.opacity = '0';
+            scrollIndicator.style.visibility = 'hidden';
+        }
     }
-    .nav-link.active::after {
-        width: 100% !important;
-    }
-`;
-document.head.appendChild(activeNavStyle);
+});
 
 // ===========================
-// Export functions for external use
+// Smooth Entrance Animation
 // ===========================
-window.BCAQI = {
-    showToast,
-    trackEvent,
-    formatNumber
-};
+window.addEventListener('load', () => {
+    document.body.style.opacity = '0';
+    requestAnimationFrame(() => {
+        document.body.style.transition = 'opacity 0.3s ease';
+        document.body.style.opacity = '1';
+    });
+});
+
+// ===========================
+// END OF SCRIPT
+// ===========================
+console.log('🎉 BCAQI JavaScript loaded successfully');
