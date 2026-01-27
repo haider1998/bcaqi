@@ -173,7 +173,7 @@ We welcome contributions! Areas to improve:
 
 ## 📄 License
 
-© 2025 BCAQI. All rights reserved.
+© 2026 BCAQI. All rights reserved.
 
 ---
 
