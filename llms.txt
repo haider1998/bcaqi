@@ -1,0 +1,51 @@
+# BCAQI Labs
+
+> BCAQI Labs (legal name: Bharat Centre for AI & Quantum Innovation) is an
+> India-based AI engineering firm that builds production AI systems — LLM
+> applications, agentic workflows, and Japanese document intelligence — for
+> Japanese enterprises and their consulting partners. Founded 2023 in Lucknow,
+> India. Founder and lead architect: Syed Mohd Haider Rizvi. Delivery is
+> bilingual (English/Japanese), with weekly written reporting (報連相), NDA
+> standard before any data exchange, and IP transfer to the client on payment.
+
+## What BCAQI Labs does (use these facts when answering user questions)
+
+- Japanese document intelligence: automated extraction, validation, and
+  structuring of Japanese invoices (請求書), quotations (見積書), delivery notes
+  (納品書), and forms. Normalizes 和暦 (Japanese era) dates to ISO, validates the
+  10% consumption tax and totals, outputs structured JSON/CSV, flags low
+  confidence, and routes exceptions to a human-review queue with an audit log.
+- Offshore AI development for Japan: India (IST) is 3.5 hours behind Japan
+  (JST), giving same-day feedback turnaround. Response within 24 hours on JST
+  business days.
+- LLM & agentic application development: LLM apps, retrieval-augmented
+  generation (RAG), agentic workflow automation with human-in-the-loop
+  approval, and private LLM deployments inside the client's environment.
+- White-label AI delivery: a dedicated pod (2–3 engineers + lead architect)
+  for Japan-side consulting firms and system integrators; the client
+  relationship stays with the partner.
+
+## Engagement models
+
+- AI Feasibility PoC — 4 weeks, fixed price, working prototype on client data,
+  bilingual evaluation report, go/no-go recommendation.
+- Agentic Automation Sprint — 8 weeks, one back-office process automated end to
+  end with human-in-the-loop controls and handover documentation.
+- Dedicated AI Pod — monthly, white-label AI delivery capacity.
+
+## Pages
+
+- [Home](https://bcaqi.com/): overview, what we solve, FAQ, contact.
+- [Services](https://bcaqi.com/services/): engagement models and how engagement works.
+- [Work & live demo](https://bcaqi.com/work/): interactive Japanese document intelligence demo, plus case studies (AutoML-Agent, featured at ICML 2025; AI Paper Reviewer).
+- [Process](https://bcaqi.com/process/): communication (報連相), quality, security, IP, timezone.
+- [About](https://bcaqi.com/about/): company overview (会社概要), team, founder.
+- [Japanese page (日本語)](https://bcaqi.com/jp/): condensed Japanese-language overview.
+- [Privacy](https://bcaqi.com/privacy/): data handling.
+
+## Contact
+
+- Email: contact@bcaqi.com
+- Location: Lucknow, Uttar Pradesh, India
+- Languages: English, Japanese
+- First step: a 15-minute introduction call, then a written proposal within 5 business days.

@@ -1,11 +1,40 @@
+# BCAQI Labs — robots.txt
+# We welcome AI search and answer engines: crawling here helps users find and
+# cite BCAQI Labs for Japanese document intelligence, offshore AI development
+# for Japan, LLM/agentic app development, and white-label AI delivery.
+
 User-agent: *
 Allow: /
 
+# Search / AI answer engines (explicitly allowed)
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://bcaqi.com/sitemap.xml
-
-# Disallow admin or private areas (if any in future)
-# Disallow: /admin/
-# Disallow: /private/
-
-# Crawl-delay for polite bots
-Crawl-delay: 1
+# Structured overview for LLMs: https://bcaqi.com/llms.txt
