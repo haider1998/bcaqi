@@ -52,22 +52,85 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "BCAQI Labs",
-    "legalName": "Bharat Centre for AI & Quantum Innovation",
-    "founder": { "@type": "Person", "name": "Syed Mohd Haider Rizvi" },
-    "url": "https://bcaqi.com/",
-    "email": "contact@bcaqi.com",
-    "description": "Production AI systems — LLM applications, agentic workflows, and document intelligence — for Japanese enterprises and their consulting partners.",
-    "foundingDate": "2023",
-    "areaServed": "JP",
-    "knowsLanguage": ["en", "ja"],
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Lucknow",
-      "addressCountry": "IN"
-    },
-    "serviceType": ["AI feasibility PoC", "Agentic automation", "Document intelligence", "Dedicated AI engineering pod"]
+    "@graph": [
+      {
+        "@type": ["ProfessionalService", "Organization"],
+        "@id": "https://bcaqi.com/#org",
+        "name": "BCAQI Labs",
+        "legalName": "Bharat Centre for AI & Quantum Innovation",
+        "url": "https://bcaqi.com/",
+        "logo": "https://bcaqi.com/assets/img/og-default.png",
+        "image": "https://bcaqi.com/assets/img/og-default.png",
+        "email": "contact@bcaqi.com",
+        "slogan": "Production AI systems for the Japanese market",
+        "description": "BCAQI Labs is an India-based AI engineering firm that builds production AI systems — LLM applications, agentic workflows, and Japanese document intelligence — for Japanese enterprises and their consulting partners. Offshore AI development with weekly written reporting, NDA standard, and bilingual (English/Japanese) delivery.",
+        "foundingDate": "2023",
+        "founder": { "@type": "Person", "name": "Syed Mohd Haider Rizvi", "jobTitle": "Founder & Lead Architect" },
+        "areaServed": [{ "@type": "Country", "name": "Japan" }, { "@type": "Country", "name": "India" }],
+        "knowsLanguage": ["en", "ja"],
+        "knowsAbout": [
+          "Japanese document intelligence", "Japanese invoice OCR automation", "請求書 自動化",
+          "offshore AI development for Japan", "LLM application development", "agentic workflow automation",
+          "retrieval-augmented generation", "private LLM deployment", "white-label AI delivery",
+          "human-in-the-loop automation", "document processing automation"
+        ],
+        "address": { "@type": "PostalAddress", "addressLocality": "Lucknow", "addressRegion": "Uttar Pradesh", "addressCountry": "IN" },
+        "contactPoint": { "@type": "ContactPoint", "email": "contact@bcaqi.com", "contactType": "sales", "availableLanguage": ["English", "Japanese"] },
+        "serviceType": ["AI feasibility PoC", "Agentic automation sprint", "Document intelligence", "Dedicated AI engineering pod", "White-label AI delivery"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://bcaqi.com/#website",
+        "url": "https://bcaqi.com/",
+        "name": "BCAQI Labs",
+        "publisher": { "@id": "https://bcaqi.com/#org" },
+        "inLanguage": ["en", "ja"]
+      },
+      {
+        "@type": "Service",
+        "name": "Japanese Document Intelligence Pipeline",
+        "provider": { "@id": "https://bcaqi.com/#org" },
+        "areaServed": { "@type": "Country", "name": "Japan" },
+        "serviceType": "Document processing automation",
+        "description": "Automated extraction, validation, and structuring of Japanese invoices, quotations, delivery notes, and forms — with 和暦 date normalization, consumption-tax validation, confidence flags, audit logs, and a human-review queue."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://bcaqi.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What does BCAQI Labs do?",
+            "acceptedAnswer": { "@type": "Answer", "text": "BCAQI Labs is an India-based AI engineering firm that builds production AI systems — LLM applications, agentic workflows, and Japanese document intelligence — for Japanese enterprises and their consulting partners. Engagements include a 4-week feasibility PoC, an 8-week agentic automation sprint, and a monthly dedicated AI pod, all with weekly written reporting and NDA standard." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can you automate Japanese invoice and document processing?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our Japanese document intelligence pipeline extracts fields from invoices (請求書), quotations, delivery notes, and forms, normalizes Japanese 和暦 dates to ISO, validates against business rules such as the 10% consumption tax, outputs structured JSON and CSV, and routes low-confidence or rule-failing fields to a human-review queue with a full audit log. A live demo is available on the site." }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you provide offshore AI development for Japanese companies?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. We are an India-based offshore AI development partner for Japanese enterprises. India (IST) is only 3.5 hours behind Japan (JST), so our morning overlaps your afternoon for same-day feedback. We follow the 報連相 (hō-ren-sō) reporting discipline with weekly written progress reports, respond within 24 hours on JST business days, and work in English and Japanese." }
+          },
+          {
+            "@type": "Question",
+            "name": "What kinds of AI applications do you build?",
+            "acceptedAnswer": { "@type": "Answer", "text": "We build LLM applications, retrieval-augmented generation (RAG) systems, agentic workflow automation with human-in-the-loop controls, and private LLM deployments that run inside the client's own environment so no data leaves their boundary." }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you work as a white-label AI delivery partner for consulting firms and system integrators?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our Dedicated AI Pod provides 2–3 engineers plus a lead architect as white-label delivery capacity for Japan-side consulting firms and system integrators. We deliver under your brand and never contact your client directly — the client relationship stays yours." }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you protect client data and intellectual property?",
+            "acceptedAnswer": { "@type": "Answer", "text": "An NDA is signed before any data is exchanged. Client data is processed only in environments you approve, in access-controlled repositories, and is deleted on project close, confirmed in writing. All work-product IP transfers to the client on payment." }
+          }
+        ]
+      }
+    ]
   }
   </script>
 </head>
@@ -109,7 +172,8 @@
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy reveal">
-          <h1>We build production AI systems for Japanese enterprises and their consulting partners.
+          <h1>We build <span class="grad">production AI systems</span> for Japanese enterprises and their consulting
+            partners.
             <span class="hero-sub-jp" lang="ja">日本企業のための本番運用レベルのAIシステムを構築します。</span>
           </h1>
           <p class="lede">LLM applications, agentic workflows, and document intelligence — engineered for real operations,
@@ -276,6 +340,83 @@
               human-review queue.</p>
           </div>
           <a class="btn btn-primary btn-lg" href="/work/#demo">Try the live demo</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (visible content mirrors FAQPage schema for AI/Google answer extraction) -->
+    <section class="section" id="faq" aria-labelledby="faq-h">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Questions &amp; answers</span>
+          <h2 id="faq-h">What Japanese buyers ask us first.</h2>
+          <p>Straight answers to the questions that decide whether an offshore AI partner is worth a call.</p>
+        </div>
+        <div class="faq reveal">
+          <details open>
+            <summary>What does BCAQI Labs do?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>BCAQI Labs is an India-based AI engineering firm that builds production AI systems — LLM applications,
+                agentic workflows, and Japanese document intelligence — for Japanese enterprises and their consulting
+                partners. Engagements include a 4-week feasibility PoC, an 8-week agentic automation sprint, and a
+                monthly dedicated AI pod, all with weekly written reporting and NDA standard.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Can you automate Japanese invoice and document processing?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Yes. Our Japanese document intelligence pipeline extracts fields from invoices (請求書), quotations,
+                delivery notes, and forms, normalizes Japanese 和暦 dates to ISO, validates against business rules such
+                as the 10% consumption tax, outputs structured JSON and CSV, and routes low-confidence or rule-failing
+                fields to a human-review queue with a full audit log. <a class="link-underline" href="/work/#demo">Try
+                  the live demo</a>.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Do you provide offshore AI development for Japanese companies?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Yes. We are an India-based offshore AI development partner for Japanese enterprises. India (IST) is only
+                3.5 hours behind Japan (JST), so our morning overlaps your afternoon for same-day feedback. We follow the
+                報連相 (hō-ren-sō) reporting discipline with weekly written progress reports, respond within 24 hours on
+                JST business days, and work in English and Japanese.</p>
+            </div>
+          </details>
+          <details>
+            <summary>What kinds of AI applications do you build?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>We build LLM applications, retrieval-augmented generation (RAG) systems, agentic workflow automation
+                with human-in-the-loop controls, and private LLM deployments that run inside the client's own
+                environment so no data leaves their boundary.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Do you work as a white-label AI delivery partner for consulting firms and system integrators?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Yes. Our Dedicated AI Pod provides 2–3 engineers plus a lead architect as white-label delivery capacity
+                for Japan-side consulting firms and system integrators. We deliver under your brand and never contact
+                your client directly — the client relationship stays yours.</p>
+            </div>
+          </details>
+          <details>
+            <summary>How do you protect client data and intellectual property?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>An NDA is signed before any data is exchanged. Client data is processed only in environments you
+                approve, in access-controlled repositories, and is deleted on project close, confirmed in writing. All
+                work-product IP transfers to the client on payment.</p>
+            </div>
+          </details>
         </div>
       </div>
     </section>
