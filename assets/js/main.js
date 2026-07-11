@@ -2,6 +2,19 @@
 (function () {
   "use strict";
 
+  // Retire the old community-site service worker + caches so returning
+  // visitors are not served stale pages after the relaunch.
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (regs) {
+      regs.forEach(function (r) { r.unregister(); });
+    }).catch(function () {});
+    if (window.caches && caches.keys) {
+      caches.keys().then(function (keys) {
+        keys.forEach(function (k) { if (/bcaqi/i.test(k)) caches.delete(k); });
+      }).catch(function () {});
+    }
+  }
+
   // Mobile nav toggle
   var header = document.querySelector(".site-header");
   var toggle = document.querySelector(".nav-toggle");

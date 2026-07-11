@@ -29,7 +29,7 @@
   --flag-err-soft: #fbeceb;
 
   /* Type */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans JP", sans-serif;
   --font-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
   --font-mono: "SFMono-Regular", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
@@ -94,7 +94,7 @@ ul { margin: 0; }
   color: var(--accent-2); margin-bottom: var(--s-4);
 }
 .section-head { max-width: 720px; margin-bottom: var(--s-7); }
-.section-head h2 { font-size: clamp(28px, 4vw, 40px); }
+.section-head h1, .section-head h2 { font-size: clamp(28px, 4vw, 40px); }
 .section-head p { margin-top: var(--s-4); color: var(--ink-2); font-size: 19px; }
 .lede { font-size: 20px; color: var(--ink-2); line-height: 1.6; }
 
@@ -359,8 +359,16 @@ pre.json .k { color: #9fb4ff; } pre.json .s { color: #a5d6a7; } pre.json .n { co
 @media (max-width: 900px) {
   .nav-links, .nav-right .btn { display: none; }
   .nav-toggle { display: inline-flex; }
-  .site-header.open .nav-links { display: flex; position: absolute; top: 66px; left: 0; right: 0; flex-direction: column;
-    align-items: flex-start; gap: var(--s-4); background: #fff; border-bottom: 1px solid var(--rule); padding: var(--s-5); }
+  /* Open mobile menu: stack links + CTA + language in normal flow so all are reachable. */
+  .site-header.open .nav { height: auto; flex-wrap: wrap; padding-bottom: var(--s-4); align-items: center; }
+  .site-header.open .brand { order: 1; }
+  .site-header.open .nav-toggle { order: 2; margin-left: auto; }
+  .site-header.open .nav > nav { order: 3; flex-basis: 100%; }
+  .site-header.open .nav-links { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4);
+    padding-top: var(--s-4); margin-top: var(--s-3); border-top: 1px solid var(--rule); }
+  .site-header.open .nav-right { order: 4; flex-basis: 100%; justify-content: flex-start; gap: var(--s-5);
+    align-items: center; }
+  .site-header.open .nav-right .btn { display: inline-flex; }
   .hero-grid, .contact-split, .grid-3, .grid-2, .demo-body, .feature-row, .footer-top { grid-template-columns: 1fr; }
   .demo-samples { border-right: none; border-bottom: 1px solid var(--rule); }
   .feature-row { gap: var(--s-4); }
