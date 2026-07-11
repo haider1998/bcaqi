@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Work &amp; live demo — BCAQI Labs</title>
+  <meta name="description"
+    content="A live Japanese document intelligence demo — extract, validate, and export fields from invoices and forms — plus case studies: AutoML-Agent (ICML 2025) and AI Paper Reviewer.">
+  <link rel="canonical" href="https://bcaqi.com/work/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="alternate" hreflang="en" href="https://bcaqi.com/work/">
+  <link rel="alternate" hreflang="ja" href="https://bcaqi.com/jp/">
+  <link rel="alternate" hreflang="x-default" href="https://bcaqi.com/work/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BCAQI Labs">
+  <meta property="og:url" content="https://bcaqi.com/work/">
+  <meta property="og:title" content="Work &amp; live demo — BCAQI Labs">
+  <meta property="og:description"
+    content="Live Japanese document intelligence demo, plus case studies: AutoML-Agent (ICML 2025) and AI Paper Reviewer.">
+  <meta property="og:image" content="https://bcaqi.com/assets/img/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#223a70">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="BCAQI Labs home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#223a70" />
+          <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+          <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+          <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+        </svg>
+        <span class="brand-name">BCAQI<span> Labs</span></span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/work/" aria-current="page">Work</a></li>
+          <li><a href="/process/">Process</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right">
+        <a class="nav-lang" href="/jp/" hreflang="ja" lang="ja">日本語</a>
+        <a class="btn btn-primary" href="/#contact">Book a 15-minute introduction</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section tight">
+      <div class="container">
+        <div class="section-head reveal" style="margin-bottom:0">
+          <span class="eyebrow">Work</span>
+          <h2>See a working system before you talk to us.</h2>
+          <p>Below is a live demonstration of a Japanese document intelligence pipeline, followed by case studies from
+            our research and engineering work.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE DEMO -->
+    <section class="section" style="padding-top:var(--s-5)" id="demo">
+      <div class="container">
+        <div class="reveal" style="margin-bottom:var(--s-5)">
+          <h3 style="font-size:26px">Japanese Document Intelligence Pipeline</h3>
+          <p class="text-muted mt-4" style="max-width:64ch">Pick a preloaded sample below. The pipeline extracts fields,
+            normalizes Japanese dates (和暦 → ISO), validates against business rules such as the 10% consumption tax,
+            and routes anything uncertain to a human-review queue. This is exactly the class of work that a general chat
+            assistant cannot do reliably.</p>
+        </div>
+
+        <div id="doc-demo" class="reveal">
+          <div class="demo-wrap">
+            <div class="demo-bar">
+              <span class="demo-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#223a70" stroke-width="2">
+                  <path d="M4 4h11l5 5v11H4z" /><path d="M14 4v6h6" />
+                </svg>
+                Document Intelligence Pipeline
+              </span>
+              <span class="env-label">Demonstration environment</span>
+            </div>
+            <div class="demo-body">
+              <div class="demo-samples">
+                <h4>Sample documents</h4>
+                <div data-samples></div>
+                <label class="sample-btn" style="cursor:pointer;display:block;border-style:dashed;text-align:center;margin-top:var(--s-4)">
+                  <span class="s-name">Upload your own</span>
+                  <span class="s-meta">PDF / PNG / JPG · optional</span>
+                  <input id="demo-file" type="file" accept="image/*,application/pdf" hidden>
+                </label>
+                <p class="form-note" data-upload-note hidden style="margin-top:10px"></p>
+                <p class="form-note" style="margin-top:var(--s-4)">Samples contain no real personal data. Nothing you
+                  upload leaves your browser in this demo.</p>
+              </div>
+              <div class="demo-main">
+                <div class="demo-steps" data-steps></div>
+                <div data-main>
+                  <div class="demo-empty">Select a sample document to run the pipeline.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="form-note mt-4">This is a demonstration with representative output. In a paid pilot we run your own
+            documents and layouts through the production pipeline, measured against an agreed accuracy target.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES -->
+    <section class="section section--fill">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Case studies</span>
+          <h2>Research-grade engineering, applied.</h2>
+        </div>
+
+        <!-- AutoML-Agent -->
+        <article class="case reveal" id="automl-agent" style="margin-bottom:var(--s-6)">
+          <span class="tag">Featured at ICML 2025</span>
+          <h3>AutoML-Agent</h3>
+          <dl>
+            <div>
+              <dt>Problem</dt>
+              <dd>Building a machine-learning pipeline — data prep, model selection, tuning, evaluation — takes expert
+                time and iteration most teams cannot spare.</dd>
+            </div>
+            <div>
+              <dt>Approach</dt>
+              <dd>An agentic system that turns a natural-language task into a plan, then executes it: multiple
+                specialized agents build, run, and evaluate candidate pipelines under a controller.</dd>
+            </div>
+            <div>
+              <dt>Outcome</dt>
+              <dd>An end-to-end ML pipeline produced from a task description, with the work presented at ICML 2025.</dd>
+            </div>
+          </dl>
+
+          <!-- Architecture diagram -->
+          <div class="mt-6" style="border-top:1px solid var(--rule);padding-top:var(--s-5)">
+            <p class="small text-muted" style="margin-bottom:12px">Architecture (simplified)</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:13px">
+              <div class="badge-inline" style="padding:10px 14px">NL task</div>
+              <span style="color:var(--muted)">→</span>
+              <div class="badge-inline" style="padding:10px 14px">Planner agent</div>
+              <span style="color:var(--muted)">→</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <div class="card" style="padding:8px 12px">Data agent</div>
+                <div class="card" style="padding:8px 12px">Model agent</div>
+                <div class="card" style="padding:8px 12px">Tuning agent</div>
+              </div>
+              <span style="color:var(--muted)">→</span>
+              <div class="badge-inline" style="padding:10px 14px">Evaluator</div>
+              <span style="color:var(--muted)">→</span>
+              <div class="badge-inline" style="padding:10px 14px;background:var(--flag-ok-soft);color:var(--flag-ok)">Pipeline + report</div>
+            </div>
+          </div>
+          <a class="btn btn-ghost mt-6" href="https://haider1998.github.io/automl-agent/" target="_blank"
+            rel="noopener noreferrer">View project ↗</a>
+        </article>
+
+        <!-- AI Paper Reviewer -->
+        <article class="case reveal" id="paper-reviewer">
+          <span class="tag">Research collaboration</span>
+          <h3>AI Paper Reviewer</h3>
+          <dl>
+            <div>
+              <dt>Problem</dt>
+              <dd>Reviewing research papers consistently and thoroughly is slow, and quality varies between reviewers.
+              </dd>
+            </div>
+            <div>
+              <dt>Approach</dt>
+              <dd>A multi-agent system that reads a paper and produces structured, criterion-based feedback —
+                methodology, novelty, clarity, and evidence — rather than a single opaque score.</dd>
+            </div>
+            <div>
+              <dt>Outcome</dt>
+              <dd>Structured review feedback aligned with how human reviewers assess work.</dd>
+            </div>
+          </dl>
+
+          <div class="mt-6" style="border-top:1px solid var(--rule);padding-top:var(--s-5)">
+            <p class="small text-muted" style="margin-bottom:12px">Architecture (simplified)</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:13px">
+              <div class="badge-inline" style="padding:10px 14px">Paper</div>
+              <span style="color:var(--muted)">→</span>
+              <div class="badge-inline" style="padding:10px 14px">Section parser</div>
+              <span style="color:var(--muted)">→</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <div class="card" style="padding:8px 12px">Methodology</div>
+                <div class="card" style="padding:8px 12px">Novelty</div>
+                <div class="card" style="padding:8px 12px">Clarity</div>
+              </div>
+              <span style="color:var(--muted)">→</span>
+              <div class="badge-inline" style="padding:10px 14px;background:var(--flag-ok-soft);color:var(--flag-ok)">Structured review</div>
+            </div>
+          </div>
+          <!-- VERIFY with owner before adding any "Stanford-affiliated" or partner attribution. -->
+          <a class="btn btn-ghost mt-6" href="https://paperreview.ai/" target="_blank" rel="noopener noreferrer">View
+            project ↗</a>
+        </article>
+
+        <p class="form-note mt-6">Additional production work is under NDA and described on request. We never name a
+          client without written permission.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section--ink cta-band">
+      <div class="container narrow">
+        <h2>Want this run on your documents?</h2>
+        <p>A 4-week feasibility PoC turns this demo into a measured result on your own data.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="/#contact">Book a 15-minute introduction</a>
+          <a class="btn btn-ghost btn-lg" href="/services/">See engagement models</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="brand-name">
+            <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+              <rect width="32" height="32" rx="7" fill="#2f4fa2" />
+              <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+              <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+              <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+            </svg>
+            BCAQI Labs
+          </span>
+          <p>Production AI systems for Japanese enterprises and their consulting partners. Built in India, delivered
+            with disciplined reporting.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/work/">Work</a></li>
+            <li><a href="/process/">Process</a></li>
+            <li><a href="/about/">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Language</h4>
+          <ul>
+            <li><a href="/">English</a></li>
+            <li><a href="/jp/" hreflang="ja" lang="ja">日本語</a></li>
+            <li><a href="/privacy/">Privacy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@bcaqi.com">contact@bcaqi.com</a></li>
+            <li><a href="/#contact">Book a 15-minute introduction</a></li>
+            <li class="small" style="color:#7b8391">Lucknow, India</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> BCAQI Labs. All rights reserved.</span>
+        <span>Response within 24h on JST business days · NDA standard</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/demo.js" defer></script>
+</body>
+
+</html>
