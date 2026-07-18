@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Extracting structured data from Japanese invoices with LLMs | BCAQI Labs</title>
+  <meta name="description"
+    content="A practical guide to Japanese invoice field extraction with LLMs: a field taxonomy for 請求書, why layouts vary, confidence thresholds and human-in-the-loop routing, and using the 10% consumption tax as a built-in correctness check.">
+  <link rel="canonical" href="https://bcaqi.com/insights/japanese-invoice-field-extraction/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="alternate" hreflang="en" href="https://bcaqi.com/insights/japanese-invoice-field-extraction/">
+  <link rel="alternate" hreflang="ja" href="https://bcaqi.com/jp/">
+  <link rel="alternate" hreflang="x-default" href="https://bcaqi.com/insights/japanese-invoice-field-extraction/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BCAQI Labs">
+  <meta property="og:url" content="https://bcaqi.com/insights/japanese-invoice-field-extraction/">
+  <meta property="og:title" content="Extracting structured data from Japanese invoices with LLMs">
+  <meta property="og:description"
+    content="A field taxonomy for 請求書, layout variance, confidence thresholds and human-in-the-loop routing, and using the consumption tax as a correctness check.">
+  <meta property="og:image" content="https://bcaqi.com/assets/img/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#223a70">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://bcaqi.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Insights", "item": "https://bcaqi.com/insights/" },
+          { "@type": "ListItem", "position": 3, "name": "Japanese invoice field extraction", "item": "https://bcaqi.com/insights/japanese-invoice-field-extraction/" }
+        ]
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "Extracting structured data from Japanese invoices with LLMs",
+        "description": "A practical guide to Japanese invoice field extraction with LLMs, including a field taxonomy, confidence thresholds, and consumption-tax validation.",
+        "image": "https://bcaqi.com/assets/img/og-default.png",
+        "datePublished": "2026-07-18",
+        "dateModified": "2026-07-18",
+        "inLanguage": "en",
+        "author": { "@type": "Person", "name": "Syed Mohd Haider Rizvi", "jobTitle": "Founder & Lead Architect" },
+        "publisher": { "@type": "Organization", "name": "BCAQI Labs", "logo": { "@type": "ImageObject", "url": "https://bcaqi.com/assets/img/og-default.png" } },
+        "mainEntityOfPage": "https://bcaqi.com/insights/japanese-invoice-field-extraction/",
+        "about": ["Japanese invoice", "請求書", "document intelligence", "LLM extraction", "consumption tax"]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="BCAQI Labs home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#223a70" />
+          <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+          <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+          <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+        </svg>
+        <span class="brand-name">BCAQI<span> Labs</span></span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/process/">Process</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/insights/" aria-current="page">Insights</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right">
+        <a class="nav-lang" href="/jp/" hreflang="ja" lang="ja">日本語</a>
+        <a class="btn btn-primary" href="/#contact">Book a 15-minute introduction</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="section">
+      <div class="container narrow">
+        <nav class="small text-muted reveal" aria-label="Breadcrumb" style="margin-bottom:var(--s-4)">
+          <a href="/">Home</a> · <a href="/insights/">Insights</a> · <span>Japanese invoice field extraction</span>
+        </nav>
+        <span class="eyebrow reveal">Insights · Document intelligence</span>
+        <h1 class="reveal" style="font-size:clamp(28px,4.2vw,42px)">Extracting structured data from Japanese invoices
+          with LLMs</h1>
+        <p class="small text-muted reveal mt-3">By Syed Mohd Haider Rizvi · Updated 18 July 2026</p>
+
+        <p class="lede reveal mt-5"><strong>Reliable Japanese invoice extraction is three steps, not one: an LLM reads
+            the document into a fixed field schema, deterministic rules validate and normalize each field, and anything
+            uncertain is routed to a human before it is committed.</strong> The single most useful correctness check is
+          free: the 10% consumption tax and the totals must agree, so the invoice validates its own arithmetic.</p>
+
+        <div class="reveal">
+          <h2 class="mt-7">A field taxonomy for 請求書</h2>
+          <p class="text-muted mt-3">Define the schema first, then extract into it. A workable core for a Japanese
+            invoice:</p>
+          <pre class="json">{
+  "document_type": "請求書",          // invoice / 見積書 / 納品書
+  "invoice_no":    "INV-2024-0512",  // 請求書番号
+  "issue_date":    "2024-05-12",     // 発行日  (和暦 normalized)
+  "supplier_name": "株式会社山田製作所", // 取引先 / 請求元
+  "subtotal":      482000,           // 小計
+  "tax_rate":      0.10,             // 消費税率  (10% or 8% reduced)
+  "tax":           48200,            // 消費税
+  "total":         530200,           // 合計金額
+  "due_date":      "2024-06-30"      // 支払期限
+}</pre>
+          <p class="text-muted mt-3">Typing matters: amounts are integers (yen has no minor unit in practice), dates are
+            ISO strings, and the tax rate is explicit so a reduced-rate (軽減税率) line can be represented rather than
+            assumed.</p>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">Why Japanese invoice layouts vary so much</h2>
+          <p class="text-muted mt-3">There is no single invoice template in Japan. Labels differ (取引先 vs 請求先 vs
+            お客様名), vertical and horizontal layouts both appear, company seals (印鑑) overlap text, and the same field
+            can be a stamp, handwriting, or print. This is why pure template/positional OCR is brittle and why an LLM —
+            which reads by meaning, not coordinates — is the right tool for the extraction step.</p>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">Confidence thresholds and human-in-the-loop routing</h2>
+          <p class="text-muted mt-3">Every extracted field carries a confidence score. Set a threshold (say 0.80) and
+            route anything below it — plus anything that fails a rule — to a review queue. The goal is not 100%
+            automation; it is <em>zero silent errors</em>. A finance team will trust a system that says "I'm not sure
+            about this handwritten note" far more than one that guesses.</p>
+          <pre class="json">for field in extracted:
+    if field.confidence &lt; 0.80 or field.rule_failed:
+        queue_for_review(field)      # held, with the source crop + reason
+    else:
+        commit(field)                # written, with an audit-log entry</pre>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">The consumption tax is a free correctness check</h2>
+          <p class="text-muted mt-3">Unlike most extraction tasks, invoices contain their own answer key. Two cheap
+            checks catch a large share of errors:</p>
+          <ul class="card" style="list-style:none;padding:var(--s-5);border:1px solid var(--rule)">
+            <li style="padding-left:22px;position:relative;margin-bottom:10px"><span style="position:absolute;left:0;color:var(--accent-2)">→</span><strong>Tax rate:</strong> <span class="conf">tax ≈ round(subtotal × rate)</span>. If the stated tax is 8% of the subtotal when you expected 10%, flag it — it may be a 軽減税率 item or an extraction error.</li>
+            <li style="padding-left:22px;position:relative"><span style="position:absolute;left:0;color:var(--accent-2)">→</span><strong>Totals:</strong> <span class="conf">subtotal + tax = total</span>. A mismatch means at least one number was read wrong.</li>
+          </ul>
+          <p class="text-muted mt-3">These checks cost nothing at runtime and turn silent extraction mistakes into
+            visible, reviewable flags.</p>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">Putting it together</h2>
+          <p class="text-muted mt-3">Extraction (LLM) → normalization (<a class="link-underline"
+              href="/insights/wareki-date-normalization/">和暦 dates</a>, numbers) → validation (tax, totals) → routing
+            (auto-commit or human review) → structured JSON/CSV with an audit log. That is exactly the
+            <a class="link-underline" href="/solutions/japanese-invoice-ocr/">Japanese invoice AI-OCR pipeline</a> we
+            build — and you can run it on sample invoices in the <a class="link-underline" href="/work/#demo">live
+              demo</a>.</p>
+        </div>
+
+        <div class="reveal card mt-7"
+          style="border-left:3px solid var(--accent);background:var(--accent-soft);padding:var(--s-5)">
+          <p style="font-size:17px;color:var(--ink)">Want this running on your own invoices, measured against an agreed
+            accuracy target? <a class="link-underline" href="/#contact">Book a 15-minute introduction.</a></p>
+        </div>
+
+        <p class="reveal mt-6"><a class="link-underline" href="/insights/wareki-date-normalization/">Related: Normalizing
+            Japanese 和暦 (era) dates for invoice systems →</a></p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="brand-name">
+            <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+              <rect width="32" height="32" rx="7" fill="#2f4fa2" />
+              <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+              <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+              <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+            </svg>
+            BCAQI Labs
+          </span>
+          <p>Production AI systems for Japanese enterprises and their consulting partners.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/work/">Work</a></li>
+            <li><a href="/process/">Process</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/insights/">Insights</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="/solutions/japanese-invoice-ocr/">Japanese invoice AI-OCR</a></li>
+            <li><a href="/solutions/offshore-ai-development-japan/">Offshore AI for Japan</a></li>
+            <li><a href="/solutions/white-label-ai-delivery/">White-label AI delivery</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@bcaqi.com">contact@bcaqi.com</a></li>
+            <li><a href="/jp/" hreflang="ja" lang="ja">日本語</a></li>
+            <li class="small" style="color:#7b8391">Lucknow, India</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> BCAQI Labs. All rights reserved.</span>
+        <span>Response within 24h on JST business days · NDA standard</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Japanese invoice AI-OCR &amp; document intelligence (LLM) | BCAQI Labs</title>
+  <meta name="description"
+    content="Production Japanese invoice AI-OCR: extract fields from 請求書 and forms with an LLM + rules pipeline, normalize 和暦 dates, validate the 10% consumption tax, and export structured JSON/CSV with a human-review queue. Try the live demo.">
+  <link rel="canonical" href="https://bcaqi.com/solutions/japanese-invoice-ocr/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="alternate" hreflang="en" href="https://bcaqi.com/solutions/japanese-invoice-ocr/">
+  <link rel="alternate" hreflang="ja" href="https://bcaqi.com/jp/">
+  <link rel="alternate" hreflang="x-default" href="https://bcaqi.com/solutions/japanese-invoice-ocr/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BCAQI Labs">
+  <meta property="og:url" content="https://bcaqi.com/solutions/japanese-invoice-ocr/">
+  <meta property="og:title" content="Japanese invoice AI-OCR &amp; document intelligence (LLM)">
+  <meta property="og:description"
+    content="Extract, validate, and structure Japanese invoices with an LLM + rules pipeline — 和暦 dates, consumption-tax checks, JSON/CSV, human review.">
+  <meta property="og:image" content="https://bcaqi.com/assets/img/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#223a70">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://bcaqi.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Solutions", "item": "https://bcaqi.com/solutions/japanese-invoice-ocr/" },
+          { "@type": "ListItem", "position": 3, "name": "Japanese invoice AI-OCR", "item": "https://bcaqi.com/solutions/japanese-invoice-ocr/" }
+        ]
+      },
+      {
+        "@type": "Service",
+        "name": "Japanese invoice AI-OCR and document intelligence",
+        "serviceType": "Document processing automation",
+        "provider": { "@type": "Organization", "name": "BCAQI Labs", "url": "https://bcaqi.com/" },
+        "areaServed": { "@type": "Country", "name": "Japan" },
+        "description": "An LLM-plus-rules pipeline that extracts fields from Japanese invoices (請求書), quotations, and delivery notes, normalizes 和暦 (Japanese era) dates to ISO, validates the 10% consumption tax and totals, outputs structured JSON/CSV, and routes low-confidence or rule-failing fields to a human-review queue with an audit log."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How is Japanese invoice AI-OCR different from ordinary OCR?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Ordinary OCR returns text; it does not know which number is the consumption tax or whether the total is correct. A document intelligence pipeline combines OCR with an LLM and business rules to output structured, validated fields — invoice number, issue date (with 和暦 normalized to ISO), supplier, subtotal, 10% consumption tax, and total — and flags anything that fails a rule for human review." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can it read 和暦 (Japanese era) dates like 令和6年5月12日?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The pipeline normalizes 和暦 dates (令和, 平成, 昭和) to ISO 8601 — for example 令和6年5月12日 becomes 2024-05-12 — including 元年 (gannen) first-year handling and full-width digits." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it validate the Japanese consumption tax?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The pipeline cross-checks that tax equals the expected rate of the subtotal (for example 10%) and that subtotal plus tax equals the stated total. A mismatch — such as an 8% reduced-rate item — is flagged rather than silently accepted." }
+          },
+          {
+            "@type": "Question",
+            "name": "What formats can it output?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Structured JSON and CSV, ready to import into an ERP or accounting system. Every record carries confidence scores and an audit log; exceptions are held in a human-review queue before they are committed." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="BCAQI Labs home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#223a70" />
+          <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+          <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+          <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+        </svg>
+        <span class="brand-name">BCAQI<span> Labs</span></span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/process/">Process</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/insights/">Insights</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right">
+        <a class="nav-lang" href="/jp/" hreflang="ja" lang="ja">日本語</a>
+        <a class="btn btn-primary" href="/#contact">Book a 15-minute introduction</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO — answer-first -->
+    <section class="section tight">
+      <div class="container narrow">
+        <nav class="small text-muted reveal" aria-label="Breadcrumb" style="margin-bottom:var(--s-4)">
+          <a href="/">Home</a> · Solutions · <span>Japanese invoice AI-OCR</span>
+        </nav>
+        <span class="eyebrow reveal">Solution · Document intelligence</span>
+        <h1 class="reveal" style="font-size:clamp(30px,4.5vw,44px)">Japanese invoice AI-OCR, built as a production
+          system.</h1>
+        <p class="lede reveal mt-4"><strong>BCAQI Labs builds Japanese invoice AI-OCR pipelines that turn 請求書,
+            quotations, and delivery notes into validated, structured data.</strong> We combine OCR with an LLM and
+          business rules to extract fields, normalize 和暦 (Japanese era) dates to ISO, validate the 10% consumption
+          tax, and export JSON/CSV — with confidence flags and a human-review queue for exceptions. It is the class of
+          work a general chat assistant cannot do reliably.</p>
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary btn-lg" href="/work/#demo">Try the live demo</a>
+          <a class="btn btn-ghost btn-lg" href="/#contact">Book a 15-minute introduction</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT IT DOES -->
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>What the pipeline extracts and checks</h2>
+          <p>Every field is typed, validated, and traceable — not just transcribed.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="card reveal">
+            <span class="card-idx">01</span>
+            <h3>Fields, not free text</h3>
+            <p>Invoice number, issue date, supplier (取引先), line items, subtotal (小計), consumption tax (消費税), and
+              total (合計) — extracted as structured fields with confidence scores.</p>
+          </article>
+          <article class="card reveal">
+            <span class="card-idx">02</span>
+            <h3>和暦 date normalization</h3>
+            <p>令和・平成・昭和 dates converted to ISO 8601, including 元年 (first-year) handling and full-width digits.
+              <a class="link-underline" href="/insights/wareki-date-normalization/">Read how we do it →</a></p>
+          </article>
+          <article class="card reveal">
+            <span class="card-idx">03</span>
+            <h3>Business-rule validation</h3>
+            <p>Consumption-tax rate and totals are cross-checked. Anything that fails — a wrong tax rate, a total that
+              does not add up — is flagged, not silently accepted.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section section--fill">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>How Japanese document intelligence works, step by step</h2>
+        </div>
+        <ol class="timeline reveal" style="max-width:760px">
+          <li><span class="step">Ingest</span><span><strong>Receive the document</strong>
+              <p>PDF or scanned image of an invoice, quotation, or form.</p></span></li>
+          <li><span class="step">Extract</span><span><strong>OCR + LLM field extraction</strong>
+              <p>A layout-aware model reads Japanese text and maps it to named fields.</p></span></li>
+          <li><span class="step">Normalize</span><span><strong>和暦 → ISO, numbers cleaned</strong>
+              <p>Japanese era dates and full-width digits are standardized.</p></span></li>
+          <li><span class="step">Validate</span><span><strong>Business rules applied</strong>
+              <p>Consumption tax and totals cross-checked against expected values.</p></span></li>
+          <li><span class="step">Route</span><span><strong>Human-review queue for exceptions</strong>
+              <p>Low-confidence or rule-failing fields wait for a person; nothing auto-posts on a failed rule.</p></span>
+          </li>
+          <li><span class="step">Export</span><span><strong>Structured JSON / CSV + audit log</strong>
+              <p>Clean records for your ERP, with a full trail of what happened.</p></span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section class="section">
+      <div class="container narrow">
+        <div class="section-head reveal">
+          <h2>Why LLM + rules beats plain OCR — and beats ChatGPT</h2>
+        </div>
+        <div class="reveal">
+          <p class="mt-4 text-muted">Plain OCR returns characters; it has no idea whether ¥48,200 is the tax or the
+            total, or whether the numbers are consistent. A general assistant like ChatGPT can read one document in a
+            chat window, but it does not integrate with your accounting system, enforce your rules, keep an audit trail,
+            or hold uncertain results for human review. A production pipeline does all four — which is what an
+            enterprise finance team actually needs.</p>
+          <p class="mt-4 text-muted">The result: fewer manual keystrokes, a defensible audit log for every posted
+            record, and exceptions surfaced instead of hidden. You can see the exact behaviour in the
+            <a class="link-underline" href="/work/#demo">live demo</a>, running on sample Japanese invoices.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section--fill" aria-labelledby="faq-h">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Questions &amp; answers</span>
+          <h2 id="faq-h">Japanese invoice AI-OCR — FAQ</h2>
+        </div>
+        <div class="faq reveal">
+          <details open>
+            <summary>How is Japanese invoice AI-OCR different from ordinary OCR?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Ordinary OCR returns text; it does not know which number is the consumption tax or whether the total is
+                correct. A document intelligence pipeline combines OCR with an LLM and business rules to output
+                structured, validated fields — invoice number, issue date (with 和暦 normalized to ISO), supplier,
+                subtotal, 10% consumption tax, and total — and flags anything that fails a rule for human review.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Can it read 和暦 (Japanese era) dates like 令和6年5月12日?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Yes. The pipeline normalizes 和暦 dates (令和, 平成, 昭和) to ISO 8601 — for example 令和6年5月12日
+                becomes 2024-05-12 — including 元年 (gannen) first-year handling and full-width digits.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Does it validate the Japanese consumption tax?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Yes. The pipeline cross-checks that tax equals the expected rate of the subtotal (for example 10%) and
+                that subtotal plus tax equals the stated total. A mismatch — such as an 8% reduced-rate item — is flagged
+                rather than silently accepted.</p>
+            </div>
+          </details>
+          <details>
+            <summary>What formats can it output?
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Structured JSON and CSV, ready to import into an ERP or accounting system. Every record carries
+                confidence scores and an audit log; exceptions are held in a human-review queue before they are
+                committed.</p>
+            </div>
+          </details>
+        </div>
+        <p class="reveal mt-6"><a class="link-underline" href="/solutions/offshore-ai-development-japan/">Offshore AI
+            development for Japan →</a> &nbsp;·&nbsp; <a class="link-underline"
+            href="/solutions/white-label-ai-delivery/">White-label AI delivery for consultancies &amp; SIs →</a></p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section--ink cta-band">
+      <div class="container narrow">
+        <h2>Run it on your invoices.</h2>
+        <p>A 4-week PoC turns the demo into a measured result on your own documents.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="/#contact">Book a 15-minute introduction</a>
+          <a class="btn btn-ghost btn-lg" href="/work/#demo">Try the live demo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="brand-name">
+            <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+              <rect width="32" height="32" rx="7" fill="#2f4fa2" />
+              <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+              <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+              <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+            </svg>
+            BCAQI Labs
+          </span>
+          <p>Production AI systems for Japanese enterprises and their consulting partners.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/work/">Work</a></li>
+            <li><a href="/process/">Process</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/insights/">Insights</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="/solutions/japanese-invoice-ocr/">Japanese invoice AI-OCR</a></li>
+            <li><a href="/solutions/offshore-ai-development-japan/">Offshore AI for Japan</a></li>
+            <li><a href="/solutions/white-label-ai-delivery/">White-label AI delivery</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@bcaqi.com">contact@bcaqi.com</a></li>
+            <li><a href="/jp/" hreflang="ja" lang="ja">日本語</a></li>
+            <li class="small" style="color:#7b8391">Lucknow, India</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> BCAQI Labs. All rights reserved.</span>
+        <span>Response within 24h on JST business days · NDA standard</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+
+</html>

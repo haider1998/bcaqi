@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Normalizing Japanese 和暦 (era) dates for invoice systems | BCAQI Labs</title>
+  <meta name="description"
+    content="A practical guide to converting Japanese 和暦 (era) dates — 令和・平成・昭和 — to ISO 8601 for invoice and document systems: era offset tables, 元年 (gannen) handling, Reiwa boundary edge cases, full-width digits, and the pitfalls that break naive conversion.">
+  <link rel="canonical" href="https://bcaqi.com/insights/wareki-date-normalization/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="alternate" hreflang="en" href="https://bcaqi.com/insights/wareki-date-normalization/">
+  <link rel="alternate" hreflang="ja" href="https://bcaqi.com/jp/">
+  <link rel="alternate" hreflang="x-default" href="https://bcaqi.com/insights/wareki-date-normalization/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BCAQI Labs">
+  <meta property="og:url" content="https://bcaqi.com/insights/wareki-date-normalization/">
+  <meta property="og:title" content="Normalizing Japanese 和暦 (era) dates for invoice systems">
+  <meta property="og:description"
+    content="Convert 令和・平成・昭和 to ISO 8601: era tables, 元年 handling, Reiwa edge cases, full-width digits, and the pitfalls that break naive conversion.">
+  <meta property="og:image" content="https://bcaqi.com/assets/img/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#223a70">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://bcaqi.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Insights", "item": "https://bcaqi.com/insights/" },
+          { "@type": "ListItem", "position": 3, "name": "和暦 date normalization", "item": "https://bcaqi.com/insights/wareki-date-normalization/" }
+        ]
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "How to normalize Japanese 和暦 (era) dates for invoice systems",
+        "description": "A practical guide to converting Japanese 和暦 (era) dates to ISO 8601 for invoice and document systems.",
+        "image": "https://bcaqi.com/assets/img/og-default.png",
+        "datePublished": "2026-07-18",
+        "dateModified": "2026-07-18",
+        "inLanguage": "en",
+        "author": { "@type": "Person", "name": "Syed Mohd Haider Rizvi", "jobTitle": "Founder & Lead Architect" },
+        "publisher": { "@type": "Organization", "name": "BCAQI Labs", "logo": { "@type": "ImageObject", "url": "https://bcaqi.com/assets/img/og-default.png" } },
+        "mainEntityOfPage": "https://bcaqi.com/insights/wareki-date-normalization/",
+        "about": ["Japanese era dates", "和暦", "date normalization", "invoice processing"]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="BCAQI Labs home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#223a70" />
+          <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+          <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+          <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+        </svg>
+        <span class="brand-name">BCAQI<span> Labs</span></span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/process/">Process</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/insights/" aria-current="page">Insights</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right">
+        <a class="nav-lang" href="/jp/" hreflang="ja" lang="ja">日本語</a>
+        <a class="btn btn-primary" href="/#contact">Book a 15-minute introduction</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="section">
+      <div class="container narrow">
+        <nav class="small text-muted reveal" aria-label="Breadcrumb" style="margin-bottom:var(--s-4)">
+          <a href="/">Home</a> · <a href="/insights/">Insights</a> · <span>和暦 date normalization</span>
+        </nav>
+        <span class="eyebrow reveal">Insights · Document intelligence</span>
+        <h1 class="reveal" style="font-size:clamp(28px,4.2vw,42px)">How to normalize Japanese 和暦 (era) dates for
+          invoice systems</h1>
+        <p class="small text-muted reveal mt-3">By Syed Mohd Haider Rizvi · Updated 18 July 2026</p>
+
+        <p class="lede reveal mt-5"><strong>To normalize a Japanese 和暦 (era) date to ISO 8601, add the era's start
+            year minus one to the era year, then format as <span class="conf">YYYY-MM-DD</span>.</strong> For example,
+          令和6年5月12日 is 2018 + 6 = 2024 → 2024-05-12 (Reiwa began in 2019, so add 2018). The work is not the
+          arithmetic — it is handling 元年 (first year), the Reiwa boundary, full-width digits, and inconsistent
+          formatting on real invoices.</p>
+
+        <div class="reveal">
+          <h2 class="mt-7">The era offset table</h2>
+          <p class="text-muted mt-3">Each Japanese era maps to a Gregorian start year. The conversion is
+            <span class="conf">gregorian = era_start_year + era_year − 1</span>.</p>
+          <table class="spec-table mt-4">
+            <thead>
+              <tr>
+                <th>Era <span class="jp">元号</span></th>
+                <th>Latin</th>
+                <th>Start</th>
+                <th>Add to era year</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th>令和</th><td>Reiwa (R)</td><td>2019-05-01</td><td>+2018</td></tr>
+              <tr><th>平成</th><td>Heisei (H)</td><td>1989-01-08</td><td>+1988</td></tr>
+              <tr><th>昭和</th><td>Shōwa (S)</td><td>1926-12-25</td><td>+1925</td></tr>
+              <tr><th>大正</th><td>Taishō (T)</td><td>1912-07-30</td><td>+1911</td></tr>
+              <tr><th>明治</th><td>Meiji (M)</td><td>1868-01-25</td><td>+1867</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">元年 (gannen) — the "first year" trap</h2>
+          <p class="text-muted mt-3">The first year of an era is written 元年 (gannen), not 1年. 令和元年 means Reiwa
+            year 1 = 2019. A converter that only parses digits will fail on 元年 entirely, or worse, treat it as a
+            missing value. Always map 元 → 1 before the arithmetic.</p>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">A minimal, correct conversion</h2>
+          <p class="text-muted mt-3">The approach in ~20 lines: normalize width, map 元 to 1, look up the era offset,
+            and add. Pseudocode:</p>
+          <pre class="json">ERA = {
+  "令和": 2018, "平成": 1988, "昭和": 1925,
+  "大正": 1911, "明治": 1867,
+  "R": 2018, "H": 1988, "S": 1925, "T": 1911, "M": 1867,
+}
+
+def wareki_to_iso(s):
+    s = to_halfwidth(s)                 # ２０２４ → 2024, remove commas
+    s = s.replace("元年", "1年")         # gannen → year 1
+    m = match(r"(令和|平成|昭和|大正|明治|[RHSTM])\s*(\d+)\s*年\s*(\d+)\s*月\s*(\d+)\s*日", s)
+    if not m: return None               # not a wareki date — let the caller decide
+    era, y, mo, d = m.groups()
+    year = ERA[era] + int(y)
+    return f"{year:04d}-{int(mo):02d}-{int(d):02d}"
+
+# 令和6年5月12日   → 2024-05-12
+# 令和元年5月1日   → 2019-05-01
+# 平成31年4月30日  → 2019-04-30  (last day of Heisei)</pre>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">Edge cases that break naive converters</h2>
+          <ul class="card" style="list-style:none;padding:var(--s-5);border:1px solid var(--rule)">
+            <li style="padding-left:22px;position:relative;margin-bottom:10px"><span style="position:absolute;left:0;color:var(--accent-2)">→</span><strong>The Heisei→Reiwa boundary (2019).</strong> 平成31年 runs 1 Jan–30 Apr 2019; 令和元年 starts 1 May 2019. Both map into the same Gregorian year. Never assume one era per calendar year.</li>
+            <li style="padding-left:22px;position:relative;margin-bottom:10px"><span style="position:absolute;left:0;color:var(--accent-2)">→</span><strong>Full-width digits and abbreviations.</strong> Invoices mix ２０２４, R6, 令和6, and 令06. Normalize width and expand single-letter era codes first.</li>
+            <li style="padding-left:22px;position:relative;margin-bottom:10px"><span style="position:absolute;left:0;color:var(--accent-2)">→</span><strong>Mixed 和暦 and 西暦.</strong> A single document can carry both the era date and a Gregorian date. Extract both and reconcile rather than trusting the first match.</li>
+            <li style="padding-left:22px;position:relative"><span style="position:absolute;left:0;color:var(--accent-2)">→</span><strong>OCR noise.</strong> 令和 misread as 令知, or a dropped 年. In a production pipeline, a low-confidence date is flagged for human review, not guessed.</li>
+          </ul>
+        </div>
+
+        <div class="reveal">
+          <h2 class="mt-7">Why this belongs in the pipeline, not the prompt</h2>
+          <p class="text-muted mt-3">You can ask an LLM to convert a date, but for invoices you want the conversion to
+            be deterministic, testable, and logged. We run 和暦 normalization as a rule step after extraction: the LLM
+            reads the field, the rule converts and validates it, and any date that fails the pattern or scores low on
+            confidence is routed to a human-review queue. That is how the
+            <a class="link-underline" href="/solutions/japanese-invoice-ocr/">Japanese invoice AI-OCR pipeline</a>
+            handles dates — you can watch it on the <a class="link-underline" href="/work/#demo">live demo</a>.</p>
+        </div>
+
+        <div class="reveal card mt-7"
+          style="border-left:3px solid var(--accent);background:var(--accent-soft);padding:var(--s-5)">
+          <p style="font-size:17px;color:var(--ink)">Need Japanese date and document handling built into your systems?
+            <a class="link-underline" href="/#contact">Book a 15-minute introduction.</a></p>
+        </div>
+
+        <p class="reveal mt-6"><a class="link-underline" href="/insights/japanese-invoice-field-extraction/">Next:
+            Extracting structured data from Japanese invoices with LLMs →</a></p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="brand-name">
+            <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+              <rect width="32" height="32" rx="7" fill="#2f4fa2" />
+              <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+              <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+              <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+            </svg>
+            BCAQI Labs
+          </span>
+          <p>Production AI systems for Japanese enterprises and their consulting partners.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/work/">Work</a></li>
+            <li><a href="/process/">Process</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/insights/">Insights</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="/solutions/japanese-invoice-ocr/">Japanese invoice AI-OCR</a></li>
+            <li><a href="/solutions/offshore-ai-development-japan/">Offshore AI for Japan</a></li>
+            <li><a href="/solutions/white-label-ai-delivery/">White-label AI delivery</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@bcaqi.com">contact@bcaqi.com</a></li>
+            <li><a href="/jp/" hreflang="ja" lang="ja">日本語</a></li>
+            <li class="small" style="color:#7b8391">Lucknow, India</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> BCAQI Labs. All rights reserved.</span>
+        <span>Response within 24h on JST business days · NDA standard</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+
+</html>

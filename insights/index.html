@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Insights — Japanese document AI engineering notes | BCAQI Labs</title>
+  <meta name="description"
+    content="Engineering notes on building AI for the Japanese market: 和暦 (Japanese era) date normalization, Japanese invoice field extraction with LLMs, and production document intelligence.">
+  <link rel="canonical" href="https://bcaqi.com/insights/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="alternate" hreflang="en" href="https://bcaqi.com/insights/">
+  <link rel="alternate" hreflang="ja" href="https://bcaqi.com/jp/">
+  <link rel="alternate" hreflang="x-default" href="https://bcaqi.com/insights/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BCAQI Labs">
+  <meta property="og:url" content="https://bcaqi.com/insights/">
+  <meta property="og:title" content="Insights — Japanese document AI engineering notes">
+  <meta property="og:description"
+    content="Engineering notes on 和暦 date normalization, Japanese invoice field extraction with LLMs, and production document intelligence.">
+  <meta property="og:image" content="https://bcaqi.com/assets/img/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#223a70">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://bcaqi.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Insights", "item": "https://bcaqi.com/insights/" }
+        ]
+      },
+      {
+        "@type": "Blog",
+        "name": "BCAQI Labs Insights",
+        "description": "Engineering notes on building AI for the Japanese market.",
+        "publisher": { "@type": "Organization", "name": "BCAQI Labs", "url": "https://bcaqi.com/" },
+        "blogPost": [
+          { "@type": "BlogPosting", "headline": "How to normalize Japanese 和暦 (era) dates for invoice systems", "url": "https://bcaqi.com/insights/wareki-date-normalization/", "author": { "@type": "Person", "name": "Syed Mohd Haider Rizvi" } },
+          { "@type": "BlogPosting", "headline": "Extracting structured data from Japanese invoices with LLMs", "url": "https://bcaqi.com/insights/japanese-invoice-field-extraction/", "author": { "@type": "Person", "name": "Syed Mohd Haider Rizvi" } }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="BCAQI Labs home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#223a70" />
+          <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+          <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+          <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+        </svg>
+        <span class="brand-name">BCAQI<span> Labs</span></span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/process/">Process</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/insights/" aria-current="page">Insights</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right">
+        <a class="nav-lang" href="/jp/" hreflang="ja" lang="ja">日本語</a>
+        <a class="btn btn-primary" href="/#contact">Book a 15-minute introduction</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section tight">
+      <div class="container">
+        <div class="section-head reveal" style="margin-bottom:0">
+          <span class="eyebrow">Insights</span>
+          <h1>Engineering notes on AI for the Japanese market.</h1>
+          <p>Deep, practical write-ups on the problems most English-language sources skip — Japanese dates, invoice
+            extraction, and production document intelligence. Written by the people who build it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="grid grid-2">
+          <article class="card reveal">
+            <span class="badge-inline">Document intelligence</span>
+            <h2 style="font-size:22px;margin-top:var(--s-3)"><a href="/insights/wareki-date-normalization/">How to
+                normalize Japanese 和暦 (era) dates for invoice systems</a></h2>
+            <p class="text-muted mt-3">令和・平成・昭和 to ISO 8601 — era tables, 元年 handling, Reiwa edge cases, and the
+              pitfalls that break naive conversion.</p>
+            <a class="btn btn-ghost mt-4" href="/insights/wareki-date-normalization/">Read the note</a>
+          </article>
+          <article class="card reveal">
+            <span class="badge-inline">Document intelligence</span>
+            <h2 style="font-size:22px;margin-top:var(--s-3)"><a
+                href="/insights/japanese-invoice-field-extraction/">Extracting structured data from Japanese invoices
+                with LLMs</a></h2>
+            <p class="text-muted mt-3">A field taxonomy for 請求書, why layout varies, confidence thresholds and
+              human-in-the-loop routing, and using the consumption tax as a correctness check.</p>
+            <a class="btn btn-ghost mt-4" href="/insights/japanese-invoice-field-extraction/">Read the note</a>
+          </article>
+        </div>
+        <p class="reveal mt-7 text-muted small">More notes are published regularly. Want the pipeline behind these on
+          your own documents? <a class="link-underline" href="/#contact">Book a 15-minute introduction.</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="brand-name">
+            <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+              <rect width="32" height="32" rx="7" fill="#2f4fa2" />
+              <rect x="9" y="8.5" width="14" height="4" rx="1.4" fill="#fff" opacity=".55" />
+              <rect x="9" y="14" width="14" height="4" rx="1.4" fill="#fff" opacity=".8" />
+              <rect x="9" y="19.5" width="14" height="4" rx="1.4" fill="#fff" />
+            </svg>
+            BCAQI Labs
+          </span>
+          <p>Production AI systems for Japanese enterprises and their consulting partners.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <ul>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/work/">Work</a></li>
+            <li><a href="/process/">Process</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/insights/">Insights</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="/solutions/japanese-invoice-ocr/">Japanese invoice AI-OCR</a></li>
+            <li><a href="/solutions/offshore-ai-development-japan/">Offshore AI for Japan</a></li>
+            <li><a href="/solutions/white-label-ai-delivery/">White-label AI delivery</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@bcaqi.com">contact@bcaqi.com</a></li>
+            <li><a href="/jp/" hreflang="ja" lang="ja">日本語</a></li>
+            <li class="small" style="color:#7b8391">Lucknow, India</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> BCAQI Labs. All rights reserved.</span>
+        <span>Response within 24h on JST business days · NDA standard</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+
+</html>

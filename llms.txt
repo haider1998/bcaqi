@@ -43,6 +43,17 @@
 - [Japanese page (日本語)](https://bcaqi.com/jp/): condensed Japanese-language overview.
 - [Privacy](https://bcaqi.com/privacy/): data handling.
 
+## Solutions (topic pages)
+
+- [Japanese invoice AI-OCR](https://bcaqi.com/solutions/japanese-invoice-ocr/): LLM + rules pipeline for extracting, validating, and structuring Japanese invoices and forms.
+- [Offshore AI development for Japan](https://bcaqi.com/solutions/offshore-ai-development-japan/): India-based offshore AI development for Japanese enterprises; −3.5h from JST, 報連相 reporting, NDA, IP transfer on payment.
+- [White-label AI delivery](https://bcaqi.com/solutions/white-label-ai-delivery/): a dedicated pod that delivers under a consulting firm's or SI's brand; the client relationship stays with the partner.
+
+## Insights (technical articles)
+
+- [Normalizing Japanese 和暦 (era) dates](https://bcaqi.com/insights/wareki-date-normalization/): converting 令和・平成・昭和 to ISO 8601 — era tables, 元年 handling, Reiwa edge cases.
+- [Extracting structured data from Japanese invoices with LLMs](https://bcaqi.com/insights/japanese-invoice-field-extraction/): field taxonomy, confidence thresholds, human-in-the-loop routing, consumption-tax validation.
+
 ## Contact
 
 - Email: contact@bcaqi.com
